@@ -37,7 +37,31 @@ module NetlinkProcEvent
       :PROC_EVENT_COMM , 0x00000200,
       :PROC_EVENT_EXIT , -0x80000000)
 
-    class Cn_data_msg < FFI::Struct
+    class ForkProcEvent < FFI::Struct
+      layout :parent_pid, :uint32,
+        :parent_tgid, :uint32,
+        :child_pid, :uint32,
+        :child_tgid, :uint32
+    end
+
+    class ExecProcEvent < FFI::Struct
+      layout :process_pid, :uint32,
+        :process_tgid, :uint32
+    end
+
+    class ExitProcEvent < FFI::Struct
+      layout :process_pid, :uint32,
+        :process_tgid, :uint32,
+        :exit_signal, :uint32
+    end
+
+    class EventData < FFI::Union
+      layout :fork, ForkProcEvent,
+        :exec, ExecProcEvent,
+        :exit, ExitProcEvent
+    end
+
+    class ProcEvent < FFI::Struct
       layout :idx, :uint32,
         :val, :uint32,
         :seq, :uint32,
@@ -47,11 +71,10 @@ module NetlinkProcEvent
         :what, Event,
         :cpu, :uint32,
         :timestamp_ns, :uint64,
-        :pid, :uint32,
-        :tid, :uint32
+        :event_data, EventData
     end
 
-    class Cn_msg < FFI::Struct
+    class CnMsg < FFI::Struct
       layout :idx, :uint32,
         :val, :uint32,
         :seq, :uint32,

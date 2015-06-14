@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'netlink_proc_event/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "netlink_proc_events"
+  spec.name          = "netlink_proc_event"
   spec.version       = NetlinkProcEvent::VERSION
   spec.authors       = ["Christopher Aue"]
   spec.email         = ["mail@christopheraue.net"]

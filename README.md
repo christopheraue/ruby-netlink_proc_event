@@ -24,15 +24,15 @@ Or install it yourself as:
 require 'netlink_proc_event'
 
 NetlinkProcEvent.on :PROC_EVENT_FORK do |event|
-  puts "#{event[:pid]} forked"
+  puts "#{event[:parent_pid]} forked into #{event[:child_pid]}"
 end
 
 NetlinkProcEvent.on :PROC_EVENT_EXEC do |event|
-  puts "#{event[:pid]} exec'd"
+  puts "#{event[:process_pid]} exec'd"
 end
 
 NetlinkProcEvent.on :PROC_EVENT_EXIT do |event|
-  puts "#{event[:pid]} killed"
+  puts "#{event[:process_pid]} killed"
 end
 
 loop do

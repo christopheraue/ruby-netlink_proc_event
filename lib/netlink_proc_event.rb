@@ -28,7 +28,7 @@ module NetlinkProcEvent
 
       if msg_length > 0 && msg_ptr && msg_valid
         msg_payload_ptr = Libnl.nlmsg_data(msg_ptr)
-        msg_payload = Libnl::Cn_data_msg.new(msg_payload_ptr)
+        msg_payload = Libnl::ProcEvent.new(msg_payload_ptr)
         handle_event(msg_payload)
       end
     end
@@ -75,7 +75,7 @@ module NetlinkProcEvent
       msg = Libnl.nlmsg_alloc_simple(Libnl::NLMSG_DONE, 0)
       data = Libnl.nlmsg_reserve(msg, 24, 4)
 
-      proc_message = Libnl::Cn_msg.new(data)
+      proc_message = Libnl::CnMsg.new(data)
       proc_message[:idx] = Libnl::CN_IDX_PROC
       proc_message[:val] = Libnl::CN_VAL_PROC
       proc_message[:data] = 1
@@ -90,7 +90,8 @@ module NetlinkProcEvent
 
     def handle_event(event)
       if event_handlers[event[:what]]
-        event_handlers[event[:what]].each{ |handler| handler.call(event) }
+        type = event[:what].to_s.split('_').last.downcase.to_sym
+        event_handlers[event[:what]].each{ |handler| handler.call(event[:event_data][type]) }
         true
       else
         false
