@@ -12,7 +12,7 @@ require 'socket'
 
 module NetlinkProcEvent
   class << self
-    attr_writer :logger
+    attr_accessor :logger
 
     def socket
       UNIXSocket.for_fd(Libnl.nl_socket_get_fd(nl_socket))

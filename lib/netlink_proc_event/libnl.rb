@@ -38,20 +38,20 @@ module NetlinkProcEvent
       :PROC_EVENT_EXIT , -0x80000000)
 
     class ForkProcEvent < FFI::Struct
-      layout :parent_pid, :uint32,
-        :parent_tgid, :uint32,
-        :child_pid, :uint32,
-        :child_tgid, :uint32
+      layout :parent_pid, :pid_t,
+        :parent_tgid, :pid_t,
+        :child_pid, :pid_t,
+        :child_tgid, :pid_t
     end
 
     class ExecProcEvent < FFI::Struct
-      layout :process_pid, :uint32,
-        :process_tgid, :uint32
+      layout :process_pid, :pid_t,
+        :process_tgid, :pid_t
     end
 
     class ExitProcEvent < FFI::Struct
-      layout :process_pid, :uint32,
-        :process_tgid, :uint32,
+      layout :process_pid, :pid_t,
+        :process_tgid, :pid_t,
         :exit_signal, :uint32
     end
 
@@ -70,7 +70,8 @@ module NetlinkProcEvent
         :flags, :uint16,
         :what, Event,
         :cpu, :uint32,
-        :timestamp_ns, :uint64,
+        :timestamp_ns, :uint32,
+        :timestamp_ns, :uint32,
         :event_data, EventData
     end
 
